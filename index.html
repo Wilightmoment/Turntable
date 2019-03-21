@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
+    <link rel="stylesheet" href="all.css">
+    <title>抽獎轉盤</title>
+</head>
+<body>
+    <div id="app">
+        <div class="btn-group">
+            <a href="#" class="button" @click="get_data(2017)">2017</a>
+            <a href="#" class="button" @click="get_data(2018)">2018</a>
+            <a href="#" class="button" @click="get_data(2019)">2019</a>
+        </div>
+        <div class="turntable">
+            <div class="circle" v-for="(angle, index) in get_angles.angle_outer" :key="index"
+            :style="(get_angles.angle_inner[index] > 180) ? `transform: rotate(${angle}deg); overflow: visible; font-size: ${Math.min(get_angles.angle_inner[index], 28)}px;`
+            : `transform: rotate(${angle}deg); overflow: hidden; font-size: ${Math.min(get_angles.angle_inner[index], 28)}px;`">
+                <div class="semicircle" :class="{'active': Object.keys(data)[index]===award}" :style="(get_angles.angle_inner[index] > 180) ? 'transform: rotate(90deg)' 
+                    : `transform: rotate(${get_angles.angle_inner[index]-90}deg)`"></div>
+                <div class="semicircle2" :class="{'active': Object.keys(data)[index]===award}" v-if="get_angles.angle_inner[index] > 180" :style="`transform: rotate(${get_angles.angle_inner[index]-90}deg)`"></div>
+                <div class="award" :class="{'active': Object.keys(data)[index]===award}" :style="`transform: rotate(${get_angles.angle_inner[index]/2}deg)`">
+                    <i :class="data[Object.keys(data)[index]][1]"></i><br>
+                    {{ Object.keys(data)[index] }}
+                </div>
+            </div>
+            <div class="pointer" :style="`transform: translate(-49%, -36%) rotate(${pointer_deg}deg)`"></div>
+            <div class="press" @click='press'>press</div>
+        </div>
+        <div class="result result-left" v-if="award!==''">
+            <i :class="data[award][1]" v-for="(i, index) in 5" :key="index" :style="`left: ${Math.random()*300-5 }px; top: ${Math.random()*150-5 }px`"></i>
+            <div class="result-text">
+                WELL<br> DONE!
+            </div>
+        </div>
+        <div class="result result-right" v-if="award!==''">
+            <i :class="data[award][1]" v-for="(i, index) in 5" :key="index" :style="`left: ${Math.random()*300-5 }px; top: ${Math.random()*150-5 }px`"></i>
+            <div class="result-text">
+                YOU GET A FREE...
+                <span class="result-award">
+                    {{award}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.9/vue.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
